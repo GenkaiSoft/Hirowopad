@@ -6,6 +6,7 @@
 #include "knceutil-0.12/knceutil.h"
 #include "kncedlg-0.10/kncedlg.h"
 
+
 #ifdef UNICODE
 namespace std { typedef wstring tstring; }
 #else
@@ -54,6 +55,21 @@ enum {
     MAX_EDIT_BUFFER = 1024 * 64
 };
 typedef BOOL (*DLL_ChooseColor)(LPCHOOSECOLOR lpcc);
+
+static TBBUTTON tbSTDButton[] = {
+	{ 6, 0,            TBSTATE_ENABLED, TBSTYLE_SEP,    0, 0, 0, -1},
+	{ 7, IDM_FILE_OPEN,     TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, -1},
+	{ 8, IDM_FILE_SAVE,     TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, -1},
+	{ 0, 0,            TBSTATE_ENABLED, TBSTYLE_SEP,    0, 0, 0, -1},
+	{ 0, IDM_EDIT_CUT,     TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, -1},
+	{ 1, IDM_EDIT_COPY,     TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, -1},
+	{ 2, IDM_EDIT_PASTE,     TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, -1},
+	{ 0, 0,            TBSTATE_ENABLED, TBSTYLE_SEP,    0, 0, 0, -1},
+	{ 3, IDM_EDIT_UNDO,     TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, -1},
+	{ 0, 0,            TBSTATE_ENABLED, TBSTYLE_SEP,    0, 0, 0, -1},
+	{ 5, IDM_EDIT_CLEAR,     TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, -1},
+	{ 12, IDM_EDIT_FIND_NEXT,     TBSTATE_ENABLED, TBSTYLE_BUTTON, 0, 0, 0, -1},
+} ;
 
 static LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp);
 static LRESULT CALLBACK editAreaProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -412,7 +428,13 @@ static void onCreate(HWND hWnd) {
     InitCommonControls();
 
 	data->hCommandBar = CommandBar_Create(g_hInstance, hWnd, 1);
+	
+
+
 	CommandBar_InsertMenubarEx(data->hCommandBar, g_hInstance, _T("MENU"), 0);
+	CommandBar_AddBitmap(data->hCommandBar,HINST_COMMCTRL, IDB_STD_SMALL_COLOR, 15,16,16) ;
+	CommandBar_AddButtons( data->hCommandBar, sizeof(tbSTDButton) / sizeof(TBBUTTON),tbSTDButton ) ;
+	CommandBar_AddAdornments(data->hCommandBar, 0, IDM_FILE_EXIT ) ;
     HMENU hMenu = CommandBar_GetMenu(data->hCommandBar, 0);
 
     HWND hEditArea = CreateWindow(_T("EDIT"), _T(""),

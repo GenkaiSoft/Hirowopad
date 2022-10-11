@@ -83,7 +83,10 @@ LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
         }
         MENUITEM "&Add BOM (UTF-8)", 255
     }
+        POPUP "&Help"
+        {
     MENUITEM "&About", 256
+}
 }
 
 FIND_STRING DIALOG 0, 0, 155, 42
